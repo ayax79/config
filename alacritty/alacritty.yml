@@ -500,13 +500,12 @@ colors:
 # Default:
 #   - (Linux/BSD/macOS) `$SHELL` or the user's login shell, if `$SHELL` is unset
 #   - (Windows) powershell
-# shell:
-  # program: /home/jack/.cargo/bin/zellij
-  # args:
-#    - --login
+shell:
+  program: /home/jack/.cargo/bin/nu
+  args:
+    - -e
+    - /home/jack/.cargo/bin/zellij
 
-# Startup directory
-#
 # Directory the shell is started in. If this is unset, or `None`, the working
 # directory of the parent process will be used.
 #working_directory: None
