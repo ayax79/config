@@ -24,7 +24,9 @@ env:
   #TERM: alacritty
   LANG: "en_US.UTF-8"
 
-#window:
+window:
+  option_as_alt: true
+
   # Window dimensions (changes require restart)
   #
   # Number of lines/columns (not pixels) in the terminal. Both lines and columns
@@ -69,7 +71,7 @@ env:
   #
   # Window opacity as a floating point number from `0.0` to `1.0`.
   # The value `0.0` is completely transparent and `1.0` is opaque.
-  #opacity: 1.0
+  opacity: 0.95
 
   # Startup Mode (changes require restart)
   #
@@ -161,7 +163,7 @@ font:
    # #style: Bold Italic
 
   # Point size
-  #size: 11.0
+  size: 12.0
 
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter
@@ -501,17 +503,17 @@ colors:
 #   - (Linux/BSD/macOS) `$SHELL` or the user's login shell, if `$SHELL` is unset
 #   - (Windows) powershell
 shell:
-  program: /home/jack/.cargo/bin/nu
+  program: /usr/local/bin/nu
   args:
     - -e
-    - /home/jack/.cargo/bin/zellij
+    - /usr/local/bin/zellij
 
 # Directory the shell is started in. If this is unset, or `None`, the working
 # directory of the parent process will be used.
 #working_directory: None
 
 # Send ESC (\x1b) before characters when alt is pressed.
-#alt_send_esc: true
+alt_send_esc: true
 
 # Offer IPC using `alacritty msg` (unix only)
 #ipc_socket: true
