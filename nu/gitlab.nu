@@ -33,7 +33,7 @@ def clone_page [
 
   let pageInfo = ($repos.data.projects.pageInfo)
 
-  if pageInfo.hasNextPage {
+  if $pageInfo.hasNextPage {
     clone_page $pageInfo.endCursor
   }
 
