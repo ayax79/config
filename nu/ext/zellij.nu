@@ -94,3 +94,9 @@ export extern "zellij setup" [
     --help(-h)                # Print help information
 
 ]
+
+
+# Return the current session
+export def "zellij current" [] {
+  zellij ls | lines | where $it =~ current | first | split row " " | first
+}
