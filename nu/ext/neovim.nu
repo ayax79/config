@@ -32,7 +32,7 @@ export def build_remote_location [
 
 #export alias lvim = lvim --listen (build_listen_location)
 
-# Run lunar vim while contralling remoting by zellij session
+# Run lunar vim while controlling which neovim server by zellij session
 export def vir [
   --listen(-l),                       # Port to listen on for initial session
   --index(-i): int = 0,               # The version per zellij session
