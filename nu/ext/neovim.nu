@@ -37,6 +37,7 @@ export def vir [
   --listen(-l),                       # Port to listen on for initial session
   --index(-i): int = 0,               # The version per zellij session
   --remote(-r): string,               # The remote string.. optional instead of --index
+  --previous-pane(-p)                 # Return to the previous pane in zellij (probably the editor pane)
   ...rest: string,                    # The rest of the command args
 ] {
   
@@ -54,6 +55,10 @@ export def vir [
       let path = (remote_path $current_session $index)
       $"Attempting to connect to ($path)\n"
       nvr --servername $path $rest
+    }
+
+    if $previous_pane {
+      zellij action focus-previous-pane
     }
   }
 
