@@ -12,3 +12,4 @@ let-env EDITOR = 'lvim'
 let-env THEME = 'nord'
 
 let-env LS_COLORS = (vivid generate $env.THEME)
+let-env BAT_THEME = 'Nord'
