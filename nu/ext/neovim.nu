@@ -64,7 +64,4 @@ export def vir [
 
 }
 
-export alias vimr = vir
-export alias nvimr = vir
-export alias lvimr = vir
 

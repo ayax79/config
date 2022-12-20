@@ -4,6 +4,27 @@ let carapace_completer = {|spans|
 }
 
 
+def get_directive_name [
+  directive: int
+] {
+  if $directive == 1 {
+    'ShellComp$directiveError'
+  } else if $directive == 2 {
+    'ShellComp$directiveNoSpace '
+  } else if $directive == 4 {
+    'ShellComp$directiveNoFileComp'
+  } else if $directive == 8 {
+    'ShellComp$directiveFilterFileExt'
+  } else if $directive == 16 {
+    'ShellComp$directiveFilterDirs'
+  } else if $directive == 0 {
+    'ShellCompDirectiveDefault '
+  } else {
+      'Unknown'
+  } 
+
+}
+
 # Copyright 2016 The Kubernetes Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,11 +41,11 @@ let carapace_completer = {|spans|
 
 # A list of cobra apps that completion will be attempted for.
 # Add new apps to this list to enable completion for them.
-let cobra_apps = ["minikube", "kubectl", "helm"]
+let cobra_apps = ["minikube", "helm", "kubectl"]
 
 # An external completer that works with any cobra based
 # command line application (e.g. kubectl, minikube)
-let-env cobra_completer = {|spans| 
+let cobra_completer = {|spans| 
   let cmd = $spans.0
 
   if not ($cobra_apps | where $cmd =~ $it | is-empty) {
@@ -85,7 +106,7 @@ let-env cobra_completer = {|spans|
       }
 
       # The full command to be executed with active help disable (Nushell does not support active help)
-      let full_cmd = $'MINIKUBE_ACTIVE_HELP=0 ($cmd) __complete ($cmd_args)'
+      let full_cmd = $'COBRA_ACTIVE_HELP=0 ($cmd) __complete ($cmd_args)'
 
       # Since nushell doesn't have anything like eval, execute in a subshell
       let result = (do -i { nu -c $"'($full_cmd)'" } | complete)
@@ -94,7 +115,7 @@ let-env cobra_completer = {|spans|
       # directive and directive_str are for posterity
       let stdout_lines = ($result.stdout | lines)
       let directive = ($stdout_lines | last | str trim | str replace ":" "" | into int)
-      let completions = ($stdout_lines | drop | parse -r '([\w\-\.:\+\=]*)\t?(.*)' | rename value description)
+      let completions = ($stdout_lines | drop | parse -r '([\w\-\.:\+\=\/]*)\t?(.*)' | rename value description)
       let completions = if $fuzzy {
         $completions | where $it.value =~ $last_span
 
@@ -125,6 +146,14 @@ let-env cobra_completer = {|spans|
       $completions
     }
 
+    # Cobra returns a list of completions that are supported with this directive
+    # There is no way to currently support this in a nushell external completer
+    let completions = if $directive == $ShellCompDirectiveFilterFileExt {
+      []
+    } else {
+      $completions
+    }
+
     let return_val = if $last_span =~ '=' {
       # if the completion is of the form -n= return flag as part of the completion so that it doesn't get replaced
       $completions | each {|it| $"($last_span | split row '=' | first)=($it.value)" }
@@ -150,9 +179,10 @@ let-env cobra_completer = {|spans|
 let chaining_completer = {|spans| 
   let cmd = $spans.0
   if not ($cobra_apps | where $cmd =~ $it | is-empty) {
-    do $env.cobra_completer $spans
+    do $cobra_completer $spans
   } else {
-    do $carapace_completer $spans
+    # do $carapace_completer $spans
+    null
   }
 }
 
