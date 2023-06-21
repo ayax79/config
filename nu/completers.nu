@@ -46,6 +46,7 @@ let cobra_apps = ["minikube", "helm", "kubectl"]
 # An external completer that works with any cobra based
 # command line application (e.g. kubectl, minikube)
 let cobra_completer = {|spans| 
+  $"spans: ($spans)\n" | save --append "/tmp/completions.txt"
   let cmd = $spans.0
 
   if not ($cobra_apps | where $cmd =~ $it | is-empty) {

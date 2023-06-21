@@ -30,7 +30,7 @@ export def build_remote_location [
   }
 }
 
-#export alias lvim = lvim --listen (build_listen_location)
+#export alias nvim = nvim --listen (build_listen_location)
 
 # Run lunar vim while controlling which neovim server by zellij session
 export def vir [
@@ -44,7 +44,7 @@ export def vir [
   if $listen {
     let location = (build_remote_location $index)
     $"Listening on ($location)\n"
-    lvim --listen $location $rest
+    nvim --listen $location $rest
   } else {
 
     if not ($remote | is-empty) {
@@ -64,4 +64,19 @@ export def vir [
 
 }
 
+export def-env "nvim server" [
+    ...rest: string
+] {
+    let current_cir = (pwd | path basename)
+    let pipe_name = $"/tmp/($current_cir)-nvim.pipe"
+    let-env CURRENT_SERVER = $pipe_name
+    nvim --listen $pipe_name $rest
+}
+
+export def-env "nvim current" [
+    ...rest: string
+] {
+    let current_server = ($env.CURRENT_SERVER)
+    nvim --server $current_server --remote $rest
+}
 

@@ -191,108 +191,118 @@ export extern "zellij action move-pane" [
 # Open a new pane in the specified direction [right|down] If no direction is specified,   
 # will try to use the biggest available space                                             
 export extern "zellij action new-pane" [
-    --help(-h)
+  --help(-h)
 ]                                                                                       
 
 
 # Create a new tab, optionally with a specified tab layout and name                       
 export extern "zellij action new-tab" [
-    --help(-h)
+  --help(-h)
 ]                                                                                        
 
 # Scroll down one page in focus pane                                                      
 export extern "zellij action page-scroll-down" [
-    --help(-h)
+  --help(-h)
 ]                                                                               
 
 
 # Scroll up one page in focus pane                                                        
 export extern "zellij action page-scroll-up" [
-    --help(-h)
+  --help(-h)
 ]                                                                                 
 
 
 # Renames the focused pane                                                                
 export extern "zellij action rename-pane" [
-    --help(-h)
+  name:string    # pane name
+  --help(-h)
 ]                                                                                    
 
 # Renames the focused pane                                                                
 export extern "zellij action rename-tab" [
-    --help(-h)
+  name:string    # pane name
+  --help(-h)
 ]                                                                                    
 
 # [increase|decrease] the focused panes area at the [left|down|up|right] border           
 export extern "zellij action resize" [
-    --help(-h)
+  --help(-h)
 ]                                                                                         
 
 
 # Scroll down in focus pane                                                               
 export extern "zellij action scroll-down" [
-    --help(-h)
+  --help(-h)
 ]                                                                                    
 
 
 # Scroll down to bottom in focus pane                                                     
 export extern "zellij action scroll-to-bottom" [
-    --help(-h)
+  --help(-h)
 ]                                                                               
 
 # Scroll up in the focused pane                                                           
 export extern "zellij action scroll-up" [
-    --help(-h)
+  --help(-h)
 ]                                                                                      
 
 # Switch input mode of all connected clients [locked|pane|tab|resize|move|search|session] 
 export extern "zellij action switch-mode" [
-    --help(-h)
+  --help(-h)
 ]                                                                                    
 
 
 # Toggle between sending text commands to all panes on the current tab and normal mode    
 export extern "zellij action toggle-active-sync-tab" [
-    --help(-h)
+  --help(-h)
 ]                                                                         
 
 
 # Toggle the visibility of all fdirectionloating panes in the current Tab, open one if none exist                                                                              
 export extern "zellij action toggle-floating-panes" [
-    --help(-h)
+  --help(-h)
 ]                                                                          
 
 
 # Toggle between fullscreen focus pane and normal layout                                  
 export extern "zellij action toggle-fullscreen" [
-    --help(-h)
+  --help(-h)
 ]                                                                              
 
 # Embed focused pane if floating or float focused pane if embedded                        
 export extern "zellij action toggle-pane-embed-or-floating" [
-    --help(-h)
+  --help(-h)
 ]                                                                  
 
 # Toggle frames around panes in the UI                                                    
 export extern "zellij action toggle-pane-frames" [
-    --help(-h)
+  --help(-h)
 ]                                                                             
 
 # Remove a previously set pane name                                                       
 export extern "zellij action undo-rename-pane" [
-    --help(-h)
+  --help(-h)
 ]                                                                               
 
 # Remove a previously set tab name                                                        
 export extern "zellij action undo-rename-tab" [
-    --help(-h)
+  --help(-h)
 ]                                                                                
 
 # Write bytes to the terminal
 export extern "zellij action write" [
-    --help(-h)
+  --help(-h)
 ]                                                                                          
 
 # Write characters to the terminl
 export extern "zellij action write-chars" [
-    --help(-h)
+  --help(-h)
 ]                                                                                    
+
+# Custom commands 
+
+
+# Rename the tab to be the current directory's name
+export def "zellij tab current-dir-name" [] {
+    pwd | path parse | get stem | sh -c $"zellij action rename-tab ($in)"
+}
