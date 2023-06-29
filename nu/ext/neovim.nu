@@ -64,6 +64,8 @@ export def vir [
 
 }
 
+# Run nvim and create a server pipe with the current working directory as the name.
+# Example: /tmp/my_project-nvim.pipe 
 export def-env "nvim server" [
     ...rest: string
 ] {
@@ -73,10 +75,18 @@ export def-env "nvim server" [
     nvim --listen $pipe_name $rest
 }
 
+# Connect to the nvim server with a pipe in the env variable CURRENT_SERVER
 export def-env "nvim current" [
-    ...rest: string
+    --set (-s),    # Set the CURRENT_SERVER env variable based off of cwd
+    file: string
 ] {
+    # remote doesn't work with relative paths, so make expand the file path
+    let file = ($"($file)" | path expand)
+    if $set {
+        let basename = (pwd | path basename)
+        let-env CURRENT_SERVER = $"/tmp/($basename)-nvim.pipe"
+    }
     let current_server = ($env.CURRENT_SERVER)
-    nvim --server $current_server --remote $rest
+    nvim --server $current_server --remote $file
 }
 

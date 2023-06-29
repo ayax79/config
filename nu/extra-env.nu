@@ -8,7 +8,7 @@ let-env PATH = ($env.PATH | prepend $'($env.CARGO_HOME)/bin')
 let-env PATH = ($env.PATH | prepend $'($env.LOCAL_HOME)/bin')
 let-env PATH = ($env.PATH | prepend $'($env.NEOVIM_HOME)/bin')
 
-let-env EDITOR = 'lvim'
+let-env EDITOR = 'nvim'
 let-env THEME = 'nord'
 
 let-env LS_COLORS = (vivid generate $env.THEME)
