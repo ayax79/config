@@ -1,5 +1,4 @@
 export def "from task" [] {
-    let ids_raw = ($in | awk '{print $1}' | lines --skip-empty)
-    let ids = ($ids_raw | skip 2 | drop 1)
+    let ids = ($in | lines --skip-empty | skip 2 | drop 1 | split column ' ' | get column2 | where (not ($it |is-empty)))
     task $ids export | from json
 }
