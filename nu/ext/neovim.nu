@@ -71,7 +71,7 @@ export def-env "nvim server" [
 ] {
     let current_cir = (pwd | path basename)
     let pipe_name = $"/tmp/($current_cir)-nvim.pipe"
-    let-env CURRENT_SERVER = $pipe_name
+    $env.CURRENT_SERVER = $pipe_name
     nvim --listen $pipe_name $rest
 }
 
@@ -84,7 +84,7 @@ export def-env "nvim current" [
     let file = ($"($file)" | path expand)
     if $set {
         let basename = (pwd | path basename)
-        let-env CURRENT_SERVER = $"/tmp/($basename)-nvim.pipe"
+        $env.CURRENT_SERVER = $"/tmp/($basename)-nvim.pipe"
     }
     let current_server = ($env.CURRENT_SERVER)
     nvim --server $current_server --remote $file

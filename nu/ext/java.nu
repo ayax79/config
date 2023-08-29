@@ -20,6 +20,6 @@ export def-env "java_home set" [
 ] {
 
   let path = ($env.PATH | where $it != ($env | get -i JAVA_HOME))
-  let-env JAVA_HOME = (java_home get $name)
-  let-env PATH = ($path | prepend $env.JAVA_HOME)
+  $env.JAVA_HOME = (java_home get $name)
+  $env.PATH = ($path | prepend $env.JAVA_HOME)
 }

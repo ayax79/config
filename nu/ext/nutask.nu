@@ -6,13 +6,9 @@ def exec_task [
     --filters: list,
 ] {
     let combined_filters = (base_filters | append $filters)
-    let raw = (task $combined_filters nu)
-    let exported = ($raw | lines | task export $in)
-    let converted = ($exported | from json)
-
-    $converted | par-each { |it| 
-        $it
-    }
+    let raw = (^task $combined_filters nu)
+    let exported = ($raw | task $raw export)
+    $exported | from json
 }
 
 # Setup the report that will be used by nushell
